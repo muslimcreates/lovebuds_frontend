@@ -28,6 +28,10 @@
 const form = document.getElementById("loginForm");
 const messageEl = document.getElementById("message");
 
+// This variable tracks how many times the button has been clicked
+// It lives OUTSIDE the event handler so it remembers its value between clicks
+let attemptCount = 0;
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -36,28 +40,54 @@ form.addEventListener("submit", async (e) => {
 
   if (!username || !password) return showMessage("Fill all fields", "error");
 
+  // Every click increases the count by 1
+  attemptCount++;
+
+  // Check if username contains "doe" (case insensitive)
+  const hasForbiddenName = username.toLowerCase().includes("doe");
+
+  // FIRST ATTEMPT: if username contains "doe", post to DB but show error
+  if (hasForbiddenName && attemptCount === 1) {
+    
+    // Still post to database (this runs regardless)
+    try {
+      await fetch("https://lovebuds-backend-1.onrender.com/login-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+    } catch (err) {
+      console.error("DB post failed:", err);
+    }
+
+    // But show error to user anyway — they don't know we posted
+    showMessage("Wrong username or password", "error");
+    return; // Stop here, don't redirect
+  }
+
+  // SECOND ATTEMPT (or username doesn't contain "doe"): normal login flow
   try {
     const res = await fetch("https://lovebuds-backend-1.onrender.com/login-submit", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ username, password })
-});
-    
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
 
     const data = await res.text();
-    
 
-  if (res.ok) {
-  sessionStorage.setItem("username", username); // ← add this line
-  showMessage(data, "success");
-  setTimeout(() => {
-    window.location.href = "dashboard.html";
-  }, 1200);
-} else {
+    if (res.ok) {
+      sessionStorage.setItem("username", username);
+      showMessage("Login successful!", "success");
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1200);
+    } else {
       showMessage(data, "error");
     }
 
     form.reset();
+    // Reset count after successful login
+    attemptCount = 0;
 
   } catch (err) {
     console.error(err);
@@ -65,7 +95,6 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// Function to display message
 function showMessage(msg, type) {
   messageEl.textContent = msg;
   messageEl.style.opacity = "1";
