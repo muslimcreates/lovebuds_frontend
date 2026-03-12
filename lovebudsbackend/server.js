@@ -1,4 +1,6 @@
+require("dotenv").config();
 // server.js
+
 const express = require("express");
 const { Pool } = require("pg");
 const cors = require("cors");
@@ -18,6 +20,7 @@ const pool = new Pool({
   port: process.env.PGPORT,           // 5432
   ssl: { rejectUnauthorized: false }  // required for Supabase connections
 });
+
 
 // --- ROUTES ---
 
@@ -61,7 +64,7 @@ app.get("/test", async (req, res) => {
     res.json(result.rows);
   } catch (err) {
     console.error("Error fetching data:", err.message);
-    res.status(500).send("Error fetching data");
+    res.status(500).json({ error: err.message });
   }
 });
 
