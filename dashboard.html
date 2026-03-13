@@ -3,194 +3,548 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - Love Buds</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <title>Love Buds 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --rose: #e8436a;
+      --blush: #f7b8c8;
+      --cream: #fff8f5;
+      --deep: #1a0a10;
+      --soft: #fde8ee;
+      --gold: #c9914a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      overflow-x: hidden;
+      color: var(--deep);
     }
 
-    header {
+    .petals {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      top: -40px;
+      font-size: 18px;
+      animation: fall linear infinite;
+      opacity: 0.5;
+    }
+
+    @keyframes fall {
+      0%   { transform: translateY(-40px) rotate(0deg); opacity: 0.6; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    .love-banner {
+      position: relative;
+      z-index: 1;
       width: 100%;
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.2);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, #1a0a10 0%, #3d1525 50%, #1a0a10 100%);
+      padding: 48px 24px 36px;
+      text-align: center;
+      overflow: hidden;
     }
 
-    header h1 {
-      font-size: 1.5rem;
-      color: #fff;
-    }
-
-    header button {
-      background: #fff;
-      border: none;
-      padding: 10px 15px;
+    .love-banner::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(232,67,106,0.3) 0%, transparent 70%);
       border-radius: 50%;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: transform 0.2s;
     }
 
-    header button:hover {
-      transform: scale(1.1);
+    .love-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(201,145,74,0.2) 0%, transparent 70%);
+      border-radius: 50%;
     }
 
-    main {
-      flex: 1;
-      width: 90%;
-      max-width: 600px;
+    .heart-icon {
+      font-size: 48px;
+      display: block;
+      animation: heartbeat 1.4s ease-in-out infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14%       { transform: scale(1.2); }
+      28%       { transform: scale(1); }
+      42%       { transform: scale(1.15); }
+      70%       { transform: scale(1); }
+    }
+
+    .love-banner h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      color: #fff;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .love-banner h1 span {
+      color: var(--blush);
+      font-style: italic;
+    }
+
+    .love-quote {
+      margin-top: 16px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(247,184,200,0.75);
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    .logged-in-as {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .love-note {
+      position: relative;
+      z-index: 1;
+      margin: 28px auto;
+      max-width: 560px;
+      padding: 0 16px;
+    }
+
+    .love-note-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px 28px;
+      box-shadow: 0 4px 40px rgba(232,67,106,0.1);
+      border: 1px solid rgba(232,67,106,0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .love-note-card::before {
+      content: '❝';
+      position: absolute;
+      top: 10px; left: 18px;
+      font-size: 64px;
+      color: var(--soft);
+      font-family: 'Playfair Display', serif;
+      line-height: 1;
+    }
+
+    .love-note-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rose);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .love-note-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: #3d1525;
+      padding-left: 8px;
+    }
+
+    .love-note-sig {
+      margin-top: 14px;
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--gold);
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+    }
+
+    .stats-row {
+      position: relative;
+      z-index: 1;
       display: flex;
-      flex-direction: column;
-      margin-top: 40px;
-      gap: 20px;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto 28px;
+      padding: 0 16px;
     }
 
-    .chat-container {
-      background: rgba(255,255,255,0.2);
-      padding: 20px;
-      border-radius: 15px;
-      backdrop-filter: blur(10px);
+    .stat-card {
+      flex: 1;
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px 12px;
+      text-align: center;
+      box-shadow: 0 2px 20px rgba(232,67,106,0.08);
+      border: 1px solid rgba(232,67,106,0.1);
+    }
+
+    .stat-icon { font-size: 24px; display: block; margin-bottom: 6px; }
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--rose);
+      font-weight: 700;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      color: #999;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .chat-section {
+      position: relative;
+      z-index: 1;
+      max-width: 560px;
+      margin: 0 auto 40px;
+      padding: 0 16px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--deep);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(232,67,106,0.3), transparent);
+    }
+
+    .chat-box {
+      background: #fff;
+      border-radius: 20px;
+      padding: 16px;
+      min-height: 220px;
+      max-height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 2px 20px rgba(232,67,106,0.08);
+      border: 1px solid rgba(232,67,106,0.1);
       display: flex;
       flex-direction: column;
       gap: 10px;
-      max-height: 400px;
-      overflow-y: auto;
+      margin-bottom: 14px;
+      scroll-behavior: smooth;
     }
 
-    .chat-container div {
-      background: rgba(255,255,255,0.6);
-      padding: 8px 12px;
-      border-radius: 12px;
-      max-width: 80%;
-      animation: fadeIn 0.5s ease;
+    .chat-box::-webkit-scrollbar { width: 4px; }
+    .chat-box::-webkit-scrollbar-track { background: transparent; }
+    .chat-box::-webkit-scrollbar-thumb { background: var(--blush); border-radius: 4px; }
+
+    .msg {
+      max-width: 78%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      animation: msgIn 0.3s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px);}
-      to { opacity: 1; transform: translateY(0);}
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    select, textarea, button {
+    .msg.sent {
+      background: linear-gradient(135deg, var(--rose), #c2325a);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg.received {
+      background: var(--soft);
+      color: var(--deep);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .msg-meta {
+      font-size: 0.65rem;
+      opacity: 0.6;
+      margin-top: 3px;
+    }
+
+    .chat-empty {
+      text-align: center;
+      color: #ccc;
+      font-style: italic;
+      font-size: 0.9rem;
+      margin: auto;
+      padding: 20px 0;
+    }
+
+    select {
       width: 100%;
-      padding: 10px;
-      border-radius: 12px;
-      border: none;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(232,67,106,0.2);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--deep);
+      background: #fff;
       outline: none;
-      font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
+      margin-bottom: 12px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e8436a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    select:focus { border-color: var(--rose); }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
     }
 
     textarea {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(232,67,106,0.2);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--deep);
       resize: none;
+      height: 52px;
+      outline: none;
+      transition: border-color 0.2s, height 0.2s;
+      background: #fff;
+    }
+
+    textarea:focus {
+      border-color: var(--rose);
       height: 80px;
     }
 
-    button {
-      background: #fff;
-      color: #ff5c7a;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #ff5c7a;
+    .send-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--rose), #c2325a);
       color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(232,67,106,0.35);
+      flex-shrink: 0;
     }
 
-    @media (max-width: 500px) {
-      header h1 { font-size: 1.2rem; }
+    .send-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(232,67,106,0.45);
+    }
+
+    .send-btn:active { transform: scale(0.95); }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--deep);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      z-index: 999;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      white-space: nowrap;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 480px) {
+      .love-banner { padding: 36px 16px 28px; }
+      .stats-row { gap: 8px; }
+      .stat-card { padding: 14px 8px; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Welcome, <span id="usernameDisplay">Guest</span>!</h1>
-    <button id="profileBtn">👤</button>
-  </header>
+  <div class="petals" id="petals"></div>
 
-  <main>
-    <h2>Start Chatting</h2>
+  <div class="love-banner">
+    <span class="heart-icon">💖</span>
+    <h1>Hey <span>Mueni</span>,<br>you are so loved.</h1>
+    <p class="love-quote">"In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine."</p>
+    <p class="logged-in-as">Logged in as: <span id="usernameDisplay">—</span></p>
+  </div>
+
+  <div class="love-note">
+    <div class="love-note-card">
+      <p class="love-note-label">✦ A note for you</p>
+      <p class="love-note-text" id="loveNoteText">Loading today's note...</p>
+      <p class="love-note-sig">— always yours 🌹</p>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-icon">💌</span>
+      <span class="stat-value" id="msgCount">—</span>
+      <span class="stat-label">Messages</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon">🌹</span>
+      <span class="stat-value" id="daysCount">—</span>
+      <span class="stat-label">Days together</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon">⭐</span>
+      <span class="stat-value">∞</span>
+      <span class="stat-label">Love for you</span>
+    </div>
+  </div>
+
+  <div class="chat-section">
+    <h2 class="section-title">💬 Send a message</h2>
 
     <select id="userSelect">
-      <option value="">-- Select a user --</option>
+      <option value="">— choose someone to message —</option>
     </select>
 
-    <textarea id="msgInput" placeholder="Type your message..."></textarea>
-    <button id="sendBtn">Send Message</button>
+    <div class="chat-box" id="chatBox">
+      <p class="chat-empty">Your messages will appear here 🌸</p>
+    </div>
 
-    <div class="chat-container" id="chatBox"></div>
-  </main>
+    <div class="input-row">
+      <textarea id="msgInput" placeholder="Write something sweet..."></textarea>
+      <button class="send-btn" id="sendBtn">➤</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
 
   <script>
-    // Replace this with username after login
+    const BASE_URL = "https://lovebuds-backend-1.onrender.com";
+
     const username = sessionStorage.getItem("username") || "Guest";
     document.getElementById("usernameDisplay").textContent = username;
 
+    // Floating petals
+    const petalEmojis = ["🌸", "🌺", "💮", "🌷", "💗"];
+    const petalsEl = document.getElementById("petals");
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement("div");
+      p.className = "petal";
+      p.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.animationDuration = (6 + Math.random() * 10) + "s";
+      p.style.animationDelay = (Math.random() * 10) + "s";
+      p.style.fontSize = (12 + Math.random() * 16) + "px";
+      petalsEl.appendChild(p);
+    }
+
+    // Daily love notes
+    const loveNotes = [
+      "Every morning I wake up grateful that you exist in my world. You make ordinary days feel like magic, Mueni.",
+      "The way you smile could outshine every star in the sky. I am the luckiest person to know you.",
+      "Distance means nothing when someone means everything. Thinking of you always.",
+      "You are my favourite notification, my favourite distraction, and my favourite person.",
+      "Some things get better with time — and loving you is one of them.",
+      "You deserve all the love songs ever written, Mueni. Every single one.",
+      "I did not know what home felt like until I found you."
+    ];
+    document.getElementById("loveNoteText").textContent = loveNotes[new Date().getDay() % loveNotes.length];
+
+    // Days together — change this to your real start date
+    const startDate = new Date("2024-01-01");
+    const days = Math.floor((new Date() - startDate) / (1000 * 60 * 60 * 24));
+    document.getElementById("daysCount").textContent = days;
+
+    // Toast
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    // Load users
     const userSelect = document.getElementById("userSelect");
-    const msgInput = document.getElementById("msgInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const chatBox = document.getElementById("chatBox");
-
-    const BASE_URL = "https://lovebuds-backend-1.onrender.com"; // <-- Replace with your deployed backend
-
-    // Load all users
     async function loadUsers() {
       try {
         const res = await fetch(`${BASE_URL}/test`);
         const users = await res.json();
-        userSelect.innerHTML = '<option value="">-- Select a user --</option>';
         users.forEach(u => {
-          if(u.username !== username) {
+          if (u.username && u.username !== username) {
             const opt = document.createElement("option");
             opt.value = u.username;
             opt.textContent = u.username;
             userSelect.appendChild(opt);
           }
         });
-      } catch(err) {
-        console.error(err);
-      }
+      } catch (err) { console.error(err); }
     }
 
-    // Load messages with selected user
+    // Load messages
+    const chatBox = document.getElementById("chatBox");
     async function loadMessages(peer) {
-      if(!peer) return;
+      if (!peer) return;
       try {
         const res = await fetch(`${BASE_URL}/messages/${peer}`);
         const messages = await res.json();
         chatBox.innerHTML = "";
+        if (messages.length === 0) {
+          chatBox.innerHTML = '<p class="chat-empty">No messages yet — say something sweet 🌸</p>';
+          return;
+        }
         messages.forEach(m => {
           const div = document.createElement("div");
-          div.textContent = `${m.sender}: ${m.message}`;
+          div.className = "msg " + (m.sender === username ? "sent" : "received");
+          div.innerHTML = `${m.message}<div class="msg-meta">${m.sender}</div>`;
           chatBox.appendChild(div);
         });
+        document.getElementById("msgCount").textContent = messages.length;
         chatBox.scrollTop = chatBox.scrollHeight;
-      } catch(err) {
-        console.error(err);
-      }
+      } catch (err) { console.error(err); }
     }
 
     // Send message
-    sendBtn.addEventListener("click", async () => {
+    const msgInput = document.getElementById("msgInput");
+    document.getElementById("sendBtn").addEventListener("click", async () => {
       const receiver = userSelect.value;
       const message = msgInput.value.trim();
-
-      if (!receiver || !message) return alert("Select a user and type a message");
-
+      if (!receiver || !message) return showToast("Select someone and write a message 💌");
       try {
         await fetch(`${BASE_URL}/send-message`, {
           method: "POST",
@@ -198,21 +552,25 @@
           body: JSON.stringify({ sender: username, receiver, message })
         });
         msgInput.value = "";
+        showToast("Message sent 💖");
         loadMessages(receiver);
-      } catch(err) {
+      } catch (err) {
         console.error(err);
+        showToast("Could not send message");
       }
     });
 
-    // Update messages whenever user selection changes
-    userSelect.addEventListener("change", () => {
-      const peer = userSelect.value;
-      loadMessages(peer);
+    userSelect.addEventListener("change", () => loadMessages(userSelect.value));
+
+    // Enter key to send
+    msgInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        document.getElementById("sendBtn").click();
+      }
     });
 
-    // Initial load
     loadUsers();
   </script>
-
 </body>
 </html>
